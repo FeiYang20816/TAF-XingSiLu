@@ -11,8 +11,8 @@ android {
         applicationId = "cn.xingsilu.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0-preview.1"
+        versionCode = 2
+        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -20,6 +20,29 @@ android {
     buildFeatures { compose = true }
     val localDebugKey = rootProject.file(".local/debug.keystore")
     if (localDebugKey.isFile) signingConfigs.getByName("debug") { storeFile = localDebugKey }
+    val releaseSigningVariables = listOf(
+        "XINGSILU_RELEASE_STORE_FILE", "XINGSILU_RELEASE_STORE_PASSWORD",
+        "XINGSILU_RELEASE_KEY_ALIAS", "XINGSILU_RELEASE_KEY_PASSWORD"
+    )
+    val releaseSigningValues = releaseSigningVariables.map { providers.environmentVariable(it).orNull }
+    val hasReleaseSigning = releaseSigningValues.all { !it.isNullOrBlank() }
+    require(releaseSigningValues.all { it == null } || hasReleaseSigning) {
+        "Release signing requires all four XINGSILU_RELEASE_* environment variables."
+    }
+    if (hasReleaseSigning) {
+        signingConfigs.create("release") {
+            storeFile = rootProject.file(releaseSigningValues[0]!!)
+            storePassword = releaseSigningValues[1]
+            keyAlias = releaseSigningValues[2]
+            keyPassword = releaseSigningValues[3]
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            isDebuggable = false
+            if (hasReleaseSigning) signingConfig = signingConfigs.getByName("release")
+        }
+    }
     packaging { resources.excludes += setOf("META-INF/LICENSE*", "META-INF/NOTICE*", "META-INF/DEPENDENCIES") }
     testOptions { unitTests.isIncludeAndroidResources = true }
     lint { abortOnError = true }

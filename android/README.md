@@ -1,6 +1,6 @@
 # 行思录 Android
 
-原生 Android 首版，版本 `1.0.0-preview.1`，应用 ID `cn.xingsilu.app`。支持 Android 8.0（API 26）及以上。
+原生 Android 正式版，版本 `1.0`，versionCode `2`，应用 ID `cn.xingsilu.app`。支持 Android 8.0（API 26）及以上。
 
 ## 已实现
 
@@ -18,10 +18,10 @@
 
 ## 安装
 
-构建后的 APK 位于 `app/build/outputs/apk/debug/app-debug.apk`，交付副本位于仓库 `dist/`。
+从 [v1.0 发布页](https://github.com/FeiYang20816/TAF-XingSiLu/releases/tag/v1.0) 的 Assets 下载 `XingSiLu-1.0.apk`，交付副本位于仓库 `dist/`。
 将 APK 传到 Android 手机，点击安装；需要时允许当前文件管理器安装应用。
 
-这是调试签名的可安装预览版，尚未用于应用商店发布。卸载会删除本机记录，请先在设置中导出完整备份。
+正式版为关闭调试功能的 Release 构建，沿用个人测试阶段的本地签名证书，支持直接覆盖已安装版本。签名密钥不随源码发布。卸载会删除本机记录；升级前也建议先在设置中导出 JSON 完整备份。
 
 ## 构建
 
@@ -53,7 +53,24 @@ macOS / Linux 可以直接运行：
 | `GRADLE_USER_HOME` | 标准 Gradle 缓存位置，不设置时使用 Gradle 默认位置 |
 | `XINGSILU_ROBOLECTRIC_DIR` | 可选的本地 Robolectric Android 运行时缓存；不设置时测试自动下载所需运行时 |
 
-Windows 脚本首次运行会创建 `.local/debug.keystore`。项目检测到此密钥时复用它；没有该密钥时，直接通过 Android Studio 或 Wrapper 构建会使用 Android 的默认调试签名，无需先运行脚本。所有密钥均留在本机。后续要覆盖安装同一个预览应用，请保留原来的签名密钥；正式发布需另外配置发布签名。
+Windows 脚本首次运行会创建 `.local/debug.keystore`。项目检测到此密钥时复用它；没有该密钥时，直接通过 Android Studio 或 Wrapper 构建会使用 Android 的默认调试签名，无需先运行脚本。所有密钥均留在本机。后续要覆盖安装同一个应用，必须保留原来的签名证书。
+
+### Release 构建与签名
+
+```powershell
+.\tools\build.ps1 -Tasks @(':app:assembleRelease', ':app:lintRelease')
+```
+
+Release 构建始终关闭调试功能。未提供发布签名时生成 `app/build/outputs/apk/release/app-release-unsigned.apk`；提供以下全部环境变量时，生成已签名的 `app-release.apk`：
+
+| 环境变量 | 用途 |
+| --- | --- |
+| `XINGSILU_RELEASE_STORE_FILE` | 本机签名密钥库位置，由当前电脑配置 |
+| `XINGSILU_RELEASE_STORE_PASSWORD` | 密钥库密码 |
+| `XINGSILU_RELEASE_KEY_ALIAS` | 签名密钥别名 |
+| `XINGSILU_RELEASE_KEY_PASSWORD` | 签名密钥密码 |
+
+这些值只通过本机构建进程注入，不写入源码或版本控制。签名文件放在被忽略的本地目录中；独立构建者使用自己的密钥。缺少部分签名变量时构建会明确报错，避免意外使用其他证书。
 
 若本机 Java 无法访问 Maven、但 PowerShell 可以下载，`tools/cache-datastore.ps1` 可从 Google Maven 缓存 DataStore 的原始发布文件，并从 Maven Central 缓存所需的 Kotlin Parcelize 运行时。缓存位于 `.local/maven/`，构建会自动识别；DataStore 二进制根据发布元数据验证 SHA-256。此脚本只用于开发环境，不打包进应用。
 

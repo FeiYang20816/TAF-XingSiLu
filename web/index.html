@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5ef">
+  <meta name="description" content="行思录，把经历沉淀为经验，把想法留给未来。离线网页交互预览。">
+  <title>行思录 · 把日子写成收获</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%235d765e'/%3E%3Ctext x='13' y='45' font-size='39' fill='%23fff' font-family='serif'%3E行%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6C8 3 4 4 3 5v15c3-2 6-1 9 1 3-2 6-3 9-1V5c-3-2-6-1-9 1Zm0 0v15"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="m10 3-.7 2.4-2 .9L5 5.7 3 9l1.7 1.8v2.4L3 15l2 3.3 2.3-.6 2 .9L10 21h4l.7-2.4 2-.9 2.3.6 2-3.3-1.7-1.8v-2.4L21 9l-2-3.3-2.3.6-2-.9L14 3Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="m9 3 6 0-1 6 4 5v2H6v-2l4-5-1-6ZM12 16v6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6M8 12h13"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V3h6v4M6 7l1 14h10l1-14M10 11v6m4-6v6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10m-7 5h4"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 20c0-9 5-14 15-16 0 10-5 16-12 14M5 20l10-10"/></symbol>
+  </defs></svg>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="seal">行</span><div><div class="brand-name">行思录<span class="version">网页预览</span></div><p>把经历沉淀为经验，把想法留给未来。</p></div></div>
+      <div class="header-actions"><span class="local-status"><span></span>只在本地，安心记录</span><button class="icon-button" id="settings-open" aria-label="打开设置" title="设置"><svg><use href="#i-settings"/></svg></button></div>
+    </header>
+    <main class="workspace">
+      <section class="collection" aria-label="记录列表">
+        <div class="collection-heading"><div><p class="eyebrow" id="collection-eyebrow">走过的路，都算数</p><h1 id="collection-title">我的经验<span class="heading-dot">.</span></h1></div><svg class="heading-leaf"><use href="#i-leaf"/></svg></div>
+        <div class="search-wrap"><svg><use href="#i-search"/></svg><input id="search" type="search" placeholder="找一找，曾经的收获" aria-label="搜索记录" autocomplete="off"><kbd>/</kbd></div>
+        <div class="list-tools"><div><button class="text-button filter-toggle" id="filter-toggle" aria-expanded="false"><svg><use href="#i-filter"/></svg>标签筛选</button></div><label class="sort-label"><span class="sr-only">排序</span><select id="sort"><option value="updatedAt">最近更新</option><option value="createdAt">最近创建</option></select></label></div>
+        <div class="tag-filters" id="tag-filters" hidden></div>
+        <div class="records" id="records"></div>
+        <div class="collection-foot"><svg><use href="#i-leaf"/></svg><span>不必写得完美，留下就有意义。</span></div>
+        <button class="new-button" id="new-record"><svg><use href="#i-plus"/></svg><span>记一条经验</span></button>
+      </section>
+      <section class="editor" id="editor" aria-label="记录详情">
+        <div class="editor-toolbar"><button class="text-button back-button" id="editor-back"><svg><use href="#i-arrow"/></svg>返回</button><div class="editor-kind" id="editor-kind"><svg><use href="#i-book"/></svg><span>经验手记</span></div><div class="editor-actions"><span class="save-status" id="save-status" role="status"></span><button class="icon-button" id="pin-record" aria-label="置顶记录" title="置顶"><svg><use href="#i-pin"/></svg></button><button class="icon-button" id="export-record" aria-label="导出当前记录" title="导出 Markdown"><svg><use href="#i-download"/></svg></button><button class="icon-button danger-hover" id="delete-record" aria-label="删除当前记录" title="移入回收站"><svg><use href="#i-trash"/></svg></button></div></div>
+        <div class="editor-paper" id="editor-paper">
+          <div class="note-meta" id="note-meta"><span id="note-date"></span><span id="sample-label" class="sample-label" hidden>示例记录</span></div>
+          <label class="field-label" id="summary-label" for="summary">一句话，记住这次收获</label>
+          <textarea id="summary" class="summary-input" rows="2" placeholder="这段经历，教会了你什么？" aria-label="一句话总结"></textarea>
+          <div class="paper-divider" id="paper-divider"></div>
+          <label class="field-label" id="content-label" for="content">背后的故事</label>
+          <textarea id="content" class="content-input" placeholder="发生了什么？你是怎么走过来的？\n\n随意写写就好，也可以以后再补充。" aria-label="记录正文"></textarea>
+          <details class="more-info" id="more-info"><summary>更多信息 <span>标签、日期等，可选填写</span></summary><div class="optional-fields"><label>标签<input id="tags" placeholder="用逗号分隔，例如：生活，学习"></label><label id="event-date-label">相关日期<input type="date" id="event-date"></label><p id="record-times"></p></div></details>
+          <button id="first-save" class="primary-button" hidden>保存经验</button>
+        </div>
+        <div class="editor-empty" id="editor-empty" hidden><svg><use href="#i-book"/></svg><h2>留一点时间，给自己。</h2><p>选一条记录慢慢读，或写下新的收获。</p></div>
+        <footer class="editor-footer"><span id="word-count">0 字</span><span><svg><use href="#i-check"/></svg>记录属于你自己</span></footer>
+      </section>
+    </main>
+    <nav class="bottom-nav" aria-label="主要导航"><button data-tab="experience" class="nav-button active" aria-current="page"><svg><use href="#i-book"/></svg><span>经验</span></button><button data-tab="idea" class="nav-button"><svg><use href="#i-spark"/></svg><span>想法</span></button></nav>
+    <div class="page-foot"><span>行有所获 · 思有所存</span><span>V1.0 交互预览</span></div>
+  </div>
+  <dialog id="settings-dialog" class="settings-dialog"><div class="dialog-heading"><div><p class="eyebrow">简单一点，专注记录</p><h2>设置</h2></div><button class="icon-button" data-close="settings-dialog" aria-label="关闭设置"><svg><use href="#i-close"/></svg></button></div><div class="settings-body"><section><h3>外观</h3><div class="theme-picker" role="group" aria-label="外观模式"><button data-theme="light">浅色</button><button data-theme="dark">深色</button><button data-theme="system">跟随系统</button></div><label class="setting-row date-preference" for="show-dates"><span>显示记录时间<small>在列表和编辑页显示，默认隐藏</small></span><input id="show-dates" type="checkbox"></label></section><section><h3>文档与数据</h3><button class="setting-row" data-export="experience"><span>导出全部经验 <small>Markdown 文档</small></span><svg><use href="#i-download"/></svg></button><button class="setting-row" data-export="idea"><span>导出全部想法 <small>Markdown 文档</small></span><svg><use href="#i-download"/></svg></button><button class="setting-row" id="backup"><span>完整数据备份 <small>包含标签、置顶与回收站</small></span><span>JSON ↗</span></button><button class="setting-row" id="restore"><span>从备份恢复 <small>合并导入，不覆盖已有记录</small></span><span>↗</span></button><input type="file" id="restore-file" accept=".json,application/json" hidden><button class="setting-row" id="trash-open"><span>回收站</span><svg><use href="#i-trash"/></svg></button></section><section class="about"><div class="about-brand">行思录 <small>V1.0 网页预览</small></div><p>把记录这件事变得足够简单。</p><p class="preview-notice">本版用于体验界面与流程，数据保存在当前浏览器中。清理浏览器数据会删除记录，请定期备份。首次打开附带示例，可自由编辑或删除。</p></section></div></dialog>
+  <dialog id="trash-dialog"><div class="dialog-heading"><div><p class="eyebrow">给误删留一条回来的路</p><h2>回收站</h2></div><button class="icon-button" data-close="trash-dialog" aria-label="关闭回收站"><svg><use href="#i-close"/></svg></button></div><div id="trash-list" class="trash-list"></div></dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title"></h2><p id="confirm-message"></p><div class="confirm-actions"><button class="secondary-button" id="confirm-cancel">取消</button><button class="primary-button" id="confirm-ok">确定</button></div></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

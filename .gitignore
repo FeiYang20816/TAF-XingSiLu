@@ -1,0 +1,27 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+!.env.example
+*.zip
+test-results/
+playwright-report/
+行思录-完整备份-*.json
+**/.gradle/
+**/.kotlin/
+**/build/
+**/local.properties
+**/.local/
+**/.idea/
+**/.tools/
+*.jks
+*.keystore
+*.apk
+*.aab
+dist/
+
+# Keep private planning documents local.
+/行思录 V1.0 软件设计方案.md
+/行思录未来可行功能预设方案.md

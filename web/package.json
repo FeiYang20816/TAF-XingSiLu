@@ -1,0 +1,12 @@
+{
+  "name": "xingsilu-preview",
+  "version": "0.1.0",
+  "private": true,
+  "description": "行思录 V1.0 本地网页交互预览",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check app.js && node --check server.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
